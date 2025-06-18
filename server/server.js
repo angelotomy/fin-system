@@ -1,6 +1,8 @@
 const path = require('path');
-// Load env from root
-require('dotenv').config();
+// Load env from repo root if present
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+// Load env from server/ folder (overrides root values if both exist)
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -34,10 +36,10 @@ app.use('/api/dashboard', dashboardRoutes);
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
-  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.use(express.static(path.join(__dirname, '../client/build')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client/build/index.html'));
+    res.sendFile(path.resolve(__dirname, '../client/build/index.html'));
   });
 }
 
