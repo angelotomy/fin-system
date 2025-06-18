@@ -1,0 +1,38 @@
+{
+  "name": "financial-system",
+  "version": "1.0.0",
+  "description": "Financial System with React frontend and Node.js backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "cd client && npm start",
+    "setup": "npm install && cd client && npm install",
+    "build": "cd client && npm install && npm run build",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "bcryptjs": "^3.0.2",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.1",
+    "morgan": "^1.10.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3",
+    "jest": "^30.0.0",
+    "supertest": "^7.1.1",
+    "eslint": "^9.29.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

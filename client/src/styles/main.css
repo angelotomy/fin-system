@@ -1,0 +1,384 @@
+/* Import Playfair Display font */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  line-height: 1.6;
+  color: #1C1C1C;
+  background-color: #FAF9F6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  color: #2E4A3F;
+  margin-bottom: 1rem;
+}
+
+/* Button Styles */
+.btn {
+  background-color: #2E4A3F;
+  color: #FAF9F6;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #5C4033;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: #0A0F1D;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid #2E4A3F;
+  color: #2E4A3F;
+}
+
+.btn-outline:hover {
+  background-color: #2E4A3F;
+  color: #FAF9F6;
+}
+
+/* Card Styles */
+.card {
+  background-color: #FAF9F6;
+  border: 1px solid rgba(203, 161, 53, 0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  color: #2E4A3F;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(203, 161, 53, 0.3);
+  padding-bottom: 0.5rem;
+}
+
+/* Table Styles */
+.transaction-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.transaction-table th {
+  background-color: rgba(46, 74, 63, 0.05);
+  color: #2E4A3F;
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 2px solid rgba(203, 161, 53, 0.3);
+}
+
+.transaction-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(203, 161, 53, 0.1);
+}
+
+.transaction-table tbody tr:hover {
+  background-color: rgba(46, 74, 63, 0.02);
+}
+
+/* Form Styles */
+.form-control {
+  border: 1px solid rgba(203, 161, 53, 0.3);
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-family: 'Source Sans Pro', sans-serif;
+  color: #1C1C1C;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #2E4A3F;
+  box-shadow: 0 0 0 2px rgba(46, 74, 63, 0.1);
+}
+
+/* Links */
+a {
+  color: #2E4A3F;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: #5C4033;
+}
+
+/* Status and Badge Styles */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.badge-success {
+  background-color: rgba(46, 74, 63, 0.1);
+  color: #2E4A3F;
+}
+
+.badge-pending {
+  background-color: rgba(203, 161, 53, 0.1);
+  color: #CBA135;
+}
+
+/* Page Headers */
+h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+/* Utility Classes */
+.text-success {
+  color: #2ecc71 !important;
+}
+
+.text-danger {
+  color: #e74c3c !important;
+}
+
+/* Spacing */
+.dashboard {
+  padding: 1.5rem;
+}
+
+.row {
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
+.col-md-3 {
+  padding: 0.75rem;
+}
+
+/* Transaction Table Styles */
+.bulk-actions {
+  padding: 1rem;
+  background-color: #FFFFF0;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.bulk-actions .btn-group {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bulk-actions .btn {
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bulk-actions .btn i {
+  font-size: 1rem;
+}
+
+.transaction-table th {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.transaction-table th:hover {
+  background-color: #FFFFF0;
+}
+
+.transaction-table .form-check {
+  margin: 0;
+}
+
+.transaction-table .form-check-input {
+  cursor: pointer;
+}
+
+.transaction-table tbody tr:hover {
+  background-color: #FFFFF0;
+}
+
+.transaction-table .badge {
+  padding: 0.5em 0.8em;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+/* Modal Styles */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  border-bottom: 1px solid #eee;
+  padding: 1.5rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.invalid-feedback {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* Debit/Credit Page Styles */
+.debit-credit {
+  padding: 20px;
+}
+
+.debit-credit .card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 8px;
+}
+
+.debit-credit .card-title {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.debit-credit .account-info {
+  padding: 10px 0;
+}
+
+.debit-credit .account-info p {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.debit-credit .table {
+  margin-bottom: 0;
+}
+
+.debit-credit .table th {
+  border-top: none;
+  font-weight: 600;
+}
+
+.debit-credit .badge {
+  padding: 6px 12px;
+  font-weight: 500;
+}
+
+.debit-credit .form-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.debit-credit .text-danger {
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.debit-credit .btn-primary {
+  padding: 8px 20px;
+  font-weight: 500;
+}
+
+.debit-credit .spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Recent Transactions Styles */
+.recent-transactions .btn-group {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.recent-transactions .btn-sm {
+  padding: 0.25rem 0.75rem;
+}
+
+.recent-transactions .table th {
+  font-weight: 600;
+  color: #495057;
+}
+
+.recent-transactions .table td {
+  vertical-align: middle;
+}
+
+.recent-transactions .badge {
+  padding: 0.4em 0.8em;
+  font-weight: 500;
+}
+
+.recent-transactions .btn-link {
+  color: #495057;
+  padding: 0.25rem 0.5rem;
+}
+
+.recent-transactions .btn-link:hover {
+  color: #0d6efd;
+  background-color: rgba(13, 110, 253, 0.1);
+  border-radius: 0.25rem;
+}
+
+.transaction-summary .card {
+  transition: transform 0.2s;
+}
+
+.transaction-summary .card:hover {
+  transform: translateY(-2px);
+}
+
+.transaction-summary .card-title {
+  color: #495057;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.transaction-summary .fa-2x {
+  opacity: 0.8;
+}
+
+/* Transaction Details Modal Styles */
+.transaction-details p {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.transaction-details strong {
+  min-width: 120px;
+  color: #495057;
+}
+
+.transaction-details .badge {
+  font-size: 0.875rem;
+} 

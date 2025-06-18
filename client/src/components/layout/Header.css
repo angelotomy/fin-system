@@ -1,0 +1,105 @@
+.header {
+  height: 70px;
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-search {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  width: 300px;
+}
+
+.header-search i {
+  color: #666;
+  margin-right: 0.5rem;
+}
+
+.header-search input {
+  border: none;
+  background: none;
+  outline: none;
+  width: 100%;
+  color: #333;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.notifications {
+  position: relative;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.icon-button:hover {
+  color: #333;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.user-menu:hover {
+  background-color: #f5f5f5;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.user-role {
+  color: #666;
+  font-size: 0.8rem;
+} 
