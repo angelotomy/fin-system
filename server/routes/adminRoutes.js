@@ -3,6 +3,12 @@ const router = express.Router();
 const adminController = require('../controllers/adminController');
 const { authenticateToken, authorize, checkPermission, auditLog } = require('../middleware/auth');
 
+// Public login route (must be before authentication middleware)
+router.post('/login', adminController.login);
+
+// Logout route (requires authentication)
+router.post('/logout', authenticateToken, adminController.logout);
+
 // Apply authentication to all routes
 router.use(authenticateToken);
 

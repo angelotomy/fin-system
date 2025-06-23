@@ -2,6 +2,8 @@ const User = require('../models/User');
 const Transaction = require('../models/Transaction');
 const Account = require('../models/Account');
 const AuditLog = require('../models/AuditLog');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 // User Management
 exports.createUser = async (req, res) => {
@@ -269,5 +271,63 @@ exports.getAuditLogs = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+// Login controller
+exports.login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ success: false, error: 'Email and password are required' });
+        }
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ success: false, error: 'Invalid credentials' });
+        }
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return res.status(401).json({ success: false, error: 'Invalid credentials' });
+        }
+        const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        // Log login event
+        if (typeof AuditLog === 'function') {
+            await AuditLog.create({
+                user_id: user._id,
+                action: 'LOGIN',
+                resource_type: 'USER',
+                resource_id: user._id.toString(),
+                description: 'User logged in',
+                status: 'SUCCESS',
+                ip_address: req.ip,
+                user_agent: req.get('user-agent')
+            });
+        }
+        res.json({ success: true, token, user: { _id: user._id, name: user.name, email: user.email, role: user.role } });
+    } catch (error) {
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};
+
+// Logout controller
+exports.logout = async (req, res) => {
+    try {
+        // Log logout event
+        if (req.user && typeof AuditLog === 'function') {
+            await AuditLog.create({
+                user_id: req.user._id,
+                action: 'LOGOUT',
+                resource_type: 'USER',
+                resource_id: req.user._id.toString(),
+                description: 'User logged out',
+                status: 'SUCCESS',
+                ip_address: req.ip,
+                user_agent: req.get('user-agent')
+            });
+        }
+        
+        res.json({ success: true, message: 'Logged out successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 }; 

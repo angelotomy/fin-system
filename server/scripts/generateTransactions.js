@@ -4,12 +4,10 @@ const { faker } = require('@faker-js/faker');
 const { v4: uuidv4 } = require('uuid');
 const Transaction = require('../models/Transaction');
 
-// Configuration
-const TOTAL_RECORDS = 1000000; // 1 million records
+const TOTAL_RECORDS = 1000000; // 1 million dummydata
 const BATCH_SIZE = 1000;
 const TOTAL_BATCHES = Math.ceil(TOTAL_RECORDS / BATCH_SIZE);
 
-// Transaction categories
 const CATEGORIES = [
     'Salary',
     'Rent',
@@ -28,20 +26,17 @@ const CATEGORIES = [
     'Other'
 ];
 
-// Sample user IDs and account numbers (in real scenario these would come from your users collection)
 const SAMPLE_USER_IDS = Array.from({ length: 100 }, () => faker.string.uuid());
 const SAMPLE_ACCOUNT_NUMBERS = Array.from({ length: 50 }, () => 
     faker.finance.accountNumber(10)
 );
 
-// Get a random date within the last year
 const getRandomDate = () => {
     const now = new Date();
     const oneYearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
     return faker.date.between({ from: oneYearAgo, to: now });
 };
 
-// Generate a single transaction
 const generateTransaction = () => ({
     transaction_id: uuidv4(),
     user_id: faker.helpers.arrayElement(SAMPLE_USER_IDS),
@@ -66,10 +61,9 @@ const generateTransaction = () => ({
     is_deleted: false
 });
 
-// Generate and insert transactions in batches
 async function generateAndInsertTransactions() {
     try {
-        // Connect to MongoDB
+        
         await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/financial-system');
         console.log('Connected to MongoDB');
 
@@ -99,7 +93,6 @@ async function generateAndInsertTransactions() {
     }
 }
 
-// Add error handlers
 process.on('SIGINT', async () => {
     await mongoose.disconnect();
     process.exit(0);

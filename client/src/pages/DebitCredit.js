@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosConfig';
 import { toast } from 'react-toastify';
 import { format } from 'date-fns';
 import RecentTransactions from '../components/transactions/RecentTransactions';
@@ -13,44 +13,58 @@ const DebitCredit = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [availableCategories, setAvailableCategories] = useState([]);
-  
-  // Add refs for tracking mounted state
   const isMounted = useRef(true);
 
-  // Fetch available categories on mount
   useEffect(() => {
     fetchCategories();
-  }, []);
-
-  // Cleanup on unmount
-  useEffect(() => {
     return () => {
       isMounted.current = false;
     };
   }, []);
 
+  // Debug: Monitor categories state changes
+  useEffect(() => {
+    console.log('Categories state updated:', availableCategories);
+    console.log('Categories count:', availableCategories.length);
+  }, [availableCategories]);
+
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('/api/transactions/categories');
+      console.log('Fetching categories...');
+      const response = await axiosInstance.get('/transactions/categories');
+      console.log('Categories response:', response.data);
+      
       if (isMounted.current && response.data.success) {
+        console.log('Setting categories from API:', response.data.data);
         setAvailableCategories(response.data.data);
+      } else {
+        console.log('API response not successful, using fallback categories');
+        // Fallback to default categories if API response is not successful
+        const defaultCategories = [
+          'Salary', 'Investment', 'Transfer', 'Withdrawal', 'Deposit',
+          'Payment', 'Refund', 'Shopping', 'Food', 'Transportation',
+          'Utilities', 'Entertainment', 'Healthcare', 'Education', 'Other'
+        ];
+        setAvailableCategories(defaultCategories);
       }
     } catch (error) {
       console.error('Error fetching categories:', error);
+      toast.error('Failed to load categories');
+      // Fallback to default categories if API fails
+      const defaultCategories = [
+        'Salary', 'Investment', 'Transfer', 'Withdrawal', 'Deposit',
+        'Payment', 'Refund', 'Shopping', 'Food', 'Transportation',
+        'Utilities', 'Entertainment', 'Healthcare', 'Education', 'Other'
+      ];
+      setAvailableCategories(defaultCategories);
     }
   };
 
   const validationSchema = Yup.object({
-    account_number: Yup.string()
-      .required('Account number is required'),
-    transaction_type: Yup.string()
-      .oneOf(['debit', 'credit'], 'Invalid transaction type')
-      .required('Transaction type is required'),
-    amount: Yup.number()
-      .positive('Amount must be positive')
-      .required('Amount is required'),
-    category: Yup.string()
-      .required('Category is required')
+    account_number: Yup.string().required('Account number is required'),
+    transaction_type: Yup.string().oneOf(['debit', 'credit'], 'Invalid transaction type').required('Transaction type is required'),
+    amount: Yup.number().positive('Amount must be positive').required('Amount is required'),
+    category: Yup.string().required('Category is required')
   });
 
   const initialValues = {
@@ -63,21 +77,13 @@ const DebitCredit = () => {
   const fetchRecentTransactions = async (accountNumber, category = null) => {
     try {
       const params = {
-        limit: category ? 100 : 10, // Show more transactions when filtering by category
+        limit: category ? 100 : 10,
         sort_by: 'timestamp',
         sort_order: 'desc'
       };
-
-      if (accountNumber) {
-        params.account_number = accountNumber;
-      }
-
-      if (category) {
-        params.category = category;
-      }
-
-      const response = await axios.get('/api/transactions', { params });
-      
+      if (accountNumber) params.account_number = accountNumber;
+      if (category) params.category = category;
+      const response = await axiosInstance.get('/transactions', { params });
       if (isMounted.current) {
         setRecentTransactions(response.data.data);
         if (category) {
@@ -85,7 +91,6 @@ const DebitCredit = () => {
         }
       }
     } catch (error) {
-      console.error('Error fetching transactions:', error);
       toast.error('Failed to fetch transactions');
     }
   };
@@ -103,13 +108,9 @@ const DebitCredit = () => {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       setLoading(true);
-
-      // Generate a unique transaction ID
       const timestamp = new Date().getTime();
       const randomNum = Math.floor(Math.random() * 10000);
       const transactionId = `TXN${timestamp}${randomNum}`;
-
-      // Add required fields and description
       const transactionData = {
         ...values,
         user_id: 'default_user',
@@ -118,18 +119,15 @@ const DebitCredit = () => {
         description: `${values.transaction_type === 'credit' ? 'Credit' : 'Debit'} transaction - ${values.category}`,
         timestamp: new Date()
       };
-
-      const response = await axios.post('/api/accounts/transaction', transactionData);
-      
+      const response = await axiosInstance.post('/accounts/transaction', transactionData);
       if (isMounted.current) {
         if (response.data.success) {
           toast.success('Transaction completed successfully!');
-          // Refresh recent transactions
           await fetchRecentTransactions(values.account_number);
-          // Dispatch event to update dashboard
           window.dispatchEvent(new Event('transactionUpdated'));
-          // Reset form after successful transaction
           resetForm();
+        } else {
+          toast.error(response.data.error || 'Failed to process transaction');
         }
       }
     } catch (error) {
@@ -170,6 +168,18 @@ const DebitCredit = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">New Transaction</h5>
+              
+              {/* Temporary debug button */}
+              <button 
+                type="button" 
+                className="btn btn-secondary mb-3"
+                onClick={() => {
+                  console.log('Manual fetch triggered');
+                  fetchCategories();
+                }}
+              >
+                Debug: Fetch Categories
+              </button>
 
               <Formik
                 initialValues={initialValues}
@@ -193,7 +203,6 @@ const DebitCredit = () => {
                       />
                       <ErrorMessage name="account_number" component="div" className="text-danger" />
                     </div>
-
                     <div className="mb-3">
                       <label htmlFor="transaction_type" className="form-label">Transaction Type</label>
                       <Field
@@ -207,7 +216,6 @@ const DebitCredit = () => {
                       </Field>
                       <ErrorMessage name="transaction_type" component="div" className="text-danger" />
                     </div>
-
                     <div className="mb-3">
                       <label htmlFor="amount" className="form-label">Amount</label>
                       <Field
@@ -219,7 +227,6 @@ const DebitCredit = () => {
                       />
                       <ErrorMessage name="amount" component="div" className="text-danger" />
                     </div>
-
                     <div className="mb-3">
                       <label htmlFor="category" className="form-label">Category</label>
                       <Field
@@ -233,15 +240,18 @@ const DebitCredit = () => {
                           <option key={category} value={category}>{category}</option>
                         ))}
                       </Field>
+                      <div className="text-muted small mt-1">
+                        Available categories: {availableCategories.length} | 
+                        Categories: {availableCategories.join(', ')}
+                      </div>
                       <ErrorMessage name="category" component="div" className="text-danger" />
                     </div>
-
                     <button
                       type="submit"
                       className="btn btn-primary"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || loading}
                     >
-                      Submit Transaction
+                      {loading ? 'Submitting...' : 'Submit Transaction'}
                     </button>
                   </Form>
                 )}
@@ -249,7 +259,6 @@ const DebitCredit = () => {
             </div>
           </div>
         </div>
-        
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
@@ -264,7 +273,6 @@ const DebitCredit = () => {
           </div>
         </div>
       </div>
-
       {/* Transaction Details Modal */}
       {showDetailsModal && selectedTransaction && (
         <div className="modal fade show" style={{ display: 'block' }}>
