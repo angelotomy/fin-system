@@ -41,7 +41,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/login', { 
+      const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+      const response = await axios.post(`${apiBaseUrl}/admin/login`, { 
         email, 
         password 
       });
@@ -69,7 +70,8 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // Call logout endpoint if available
-      await axios.post('http://localhost:5000/api/admin/logout');
+      const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+      await axios.post(`${apiBaseUrl}/admin/logout`);
     } catch (error) {
       // Ignore errors on logout - we still want to clear local state
       console.log('Logout API call failed, but continuing with local logout');
