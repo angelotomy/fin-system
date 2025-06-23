@@ -22,23 +22,12 @@ const DebitCredit = () => {
     };
   }, []);
 
-  // Debug: Monitor categories state changes
-  useEffect(() => {
-    console.log('Categories state updated:', availableCategories);
-    console.log('Categories count:', availableCategories.length);
-  }, [availableCategories]);
-
   const fetchCategories = async () => {
     try {
-      console.log('Fetching categories...');
       const response = await axiosInstance.get('/transactions/categories');
-      console.log('Categories response:', response.data);
-      
       if (isMounted.current && response.data.success) {
-        console.log('Setting categories from API:', response.data.data);
         setAvailableCategories(response.data.data);
       } else {
-        console.log('API response not successful, using fallback categories');
         // Fallback to default categories if API response is not successful
         const defaultCategories = [
           'Salary', 'Investment', 'Transfer', 'Withdrawal', 'Deposit',
@@ -169,18 +158,6 @@ const DebitCredit = () => {
             <div className="card-body">
               <h5 className="card-title">New Transaction</h5>
               
-              {/* Temporary debug button */}
-              <button 
-                type="button" 
-                className="btn btn-secondary mb-3"
-                onClick={() => {
-                  console.log('Manual fetch triggered');
-                  fetchCategories();
-                }}
-              >
-                Debug: Fetch Categories
-              </button>
-
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -240,10 +217,6 @@ const DebitCredit = () => {
                           <option key={category} value={category}>{category}</option>
                         ))}
                       </Field>
-                      <div className="text-muted small mt-1">
-                        Available categories: {availableCategories.length} | 
-                        Categories: {availableCategories.join(', ')}
-                      </div>
                       <ErrorMessage name="category" component="div" className="text-danger" />
                     </div>
                     <button
