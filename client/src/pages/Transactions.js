@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import TransactionFilters from '../components/transactions/TransactionFilters';
 import TransactionTable from '../components/transactions/TransactionTable';
-import axiosInstance from '../utils/axiosInstance';
+import axiosInstance from '../utils/axiosConfig';
 import { toast } from 'react-toastify';
 
 const Transactions = () => {
