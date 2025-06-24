@@ -23,14 +23,17 @@ connectDB();
 
 // CORS configuration
 const corsOptions = {
-  origin: [
-    'https://fin-system-d4yy2nfl5-angelo-tomys-projects.vercel.app', // previous deployment
-    'https://fin-system-f401kktrc-angelo-tomys-projects.vercel.app', // previous deployment
-    'https://fin-system-r4tyje6yy-angelo-tomys-projects.vercel.app', // latest deployment
-    'https://fin-system-ckyf6thi1-angelo-tomys-projects.vercel.app', // <-- NEW deployment
-    'https://fin-system-r3i01dw5v-angelo-tomys-projects.vercel.app', // <-- NEW deployment
-    process.env.FRONTEND_URL // optional, if set in env
-  ],
+  origin: (origin, callback) => {
+    if (
+      !origin ||
+      origin.endsWith('.vercel.app') ||
+      origin === 'https://app.yourdomain.com'
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
