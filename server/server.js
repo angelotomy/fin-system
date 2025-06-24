@@ -24,7 +24,7 @@ connectDB();
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL, 'https://your-frontend-domain.vercel.app'] // Update with your Vercel domain
+    ? [process.env.FRONTEND_URL, 'https://fin-system.vercel.app/'] // Update with your Vercel domain
     : ['http://localhost:3000'],
   credentials: true,
   optionsSuccessStatus: 200
