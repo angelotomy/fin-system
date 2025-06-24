@@ -27,6 +27,7 @@ const corsOptions = {
     'https://fin-system-d4yy2nfl5-angelo-tomys-projects.vercel.app', // previous deployment
     'https://fin-system-f401kktrc-angelo-tomys-projects.vercel.app', // previous deployment
     'https://fin-system-r4tyje6yy-angelo-tomys-projects.vercel.app', // latest deployment
+    'https://fin-system-ckyf6thi1-angelo-tomys-projects.vercel.app', // <-- NEW deployment
     process.env.FRONTEND_URL // optional, if set in env
   ],
   credentials: true,
