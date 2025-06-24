@@ -24,7 +24,7 @@ connectDB();
 // CORS configuration
 const corsOptions = {
   origin: [
-    'https://fin-system-ealonos2e-angelo-tomys-projects.vercel.app', // your Vercel frontend
+    'https://fin-system-f401kktrc-angelo-tomys-projects.vercel.app', // your Vercel frontend
     process.env.FRONTEND_URL // optional, if you set this env var
   ],
   credentials: true,
