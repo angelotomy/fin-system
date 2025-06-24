@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import TransactionFilters from '../components/transactions/TransactionFilters';
 import TransactionTable from '../components/transactions/TransactionTable';
-import axiosInstance from '../utils/axiosConfig';
+import axiosConfig from '../utils/axiosConfig';
 import { toast } from 'react-toastify';
 
 const Transactions = () => {
@@ -23,7 +23,7 @@ const Transactions = () => {
   const fetchTransactions = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get('/api/transactions', {
+      const response = await axiosConfig.get('/api/transactions', {
         params: {
           page: currentPage,
           sortBy: sortConfig.key,
@@ -82,7 +82,7 @@ const Transactions = () => {
       switch (action) {
         case 'delete':
           if (window.confirm(`Are you sure you want to delete ${selectedIds.length} transaction(s)?`)) {
-            await axios.delete('/api/transactions/bulk', { data: { transactionIds: selectedIds } });
+            await axiosConfig.delete('/api/transactions/bulk', { data: { transactionIds: selectedIds } });
             toast.success(`${selectedIds.length} transaction(s) deleted successfully`);
             setSelectedTransactions([]); // Clear selection
             fetchTransactions(); // Refresh the list
@@ -90,7 +90,7 @@ const Transactions = () => {
           break;
 
         case 'markSuccess':
-          await axios.post('/api/transactions/bulk-update-status', {
+          await axiosConfig.post('/api/transactions/bulk-update-status', {
             transactionIds: selectedIds,
             status: 'success'
           });
@@ -99,7 +99,7 @@ const Transactions = () => {
           break;
 
         case 'markFailed':
-          await axios.post('/api/transactions/bulk-update-status', {
+          await axiosConfig.post('/api/transactions/bulk-update-status', {
             transactionIds: selectedIds,
             status: 'failed'
           });
@@ -141,7 +141,7 @@ const Transactions = () => {
 
     if (window.confirm('Are you sure you want to delete this transaction?')) {
       try {
-        await axios.delete(`/api/transactions/${transactionId}`);
+        await axiosConfig.delete(`/api/transactions/${transactionId}`);
         toast.success('Transaction deleted successfully');
         fetchTransactions(); // Refresh the transactions list
       } catch (err) {
