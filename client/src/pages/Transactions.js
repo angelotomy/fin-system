@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import TransactionFilters from '../components/transactions/TransactionFilters';
 import TransactionTable from '../components/transactions/TransactionTable';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import { toast } from 'react-toastify';
 
 const Transactions = () => {
@@ -23,7 +23,7 @@ const Transactions = () => {
   const fetchTransactions = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/transactions', {
+      const response = await axiosInstance.get('/api/transactions', {
         params: {
           page: currentPage,
           sortBy: sortConfig.key,
